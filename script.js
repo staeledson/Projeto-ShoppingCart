@@ -1,8 +1,9 @@
 // Esse tipo de comentário que estão antes de todas as funções são chamados de JSdoc,
 // experimente passar o mouse sobre o nome das funções e verá que elas possuem descrições! 
 
-const { fetchProducts } = require("./helpers/fetchProducts");
+const { fetchProducts } = require('./helpers/fetchProducts');
 
+console.log(fetchProducts);
 // Fique a vontade para modificar o código já escrito e criar suas próprias funções!
 
 /**
@@ -51,12 +52,16 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
   return section;
 };
 
+console.log(createProductItemElement);
+
 /**
  * Função que recupera o ID do produto passado como parâmetro.
  * @param {Element} product - Elemento do produto.
  * @returns {string} ID do produto.
  */
 const getIdFromProductItem = (product) => product.querySelector('span.id').innerText;
+
+console.log(getIdFromProductItem());
 
 /**
  * Função responsável por criar e retornar um item do carrinho.
@@ -73,6 +78,8 @@ const createCartItemElement = ({ id, title, price }) => {
   li.addEventListener('click', cartItemClickListener);
   return li;
 };
+
+console.log(createCartItemElement());
 // console.log(fetchProducts('computador'));
 
 window.onload = () => { };
