@@ -1,4 +1,3 @@
-
 const fetchProducts = async (QUERY) => {
   if (QUERY) {
     const endpoint = `https://api.mercadolibre.com/sites/MLB/search?q=${QUERY}`;
