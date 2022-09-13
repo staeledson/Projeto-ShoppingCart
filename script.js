@@ -1,9 +1,6 @@
 // Esse tipo de comentário que estão antes de todas as funções são chamados de JSdoc,
 // experimente passar o mouse sobre o nome das funções e verá que elas possuem descrições! 
 
-const { fetchProducts } = require('./helpers/fetchProducts');
-
-console.log(fetchProducts);
 // Fique a vontade para modificar o código já escrito e criar suas próprias funções!
 
 /**
@@ -52,7 +49,7 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
   return section;
 };
 
-console.log(createProductItemElement);
+// console.log(createProductItemElement);
 
 /**
  * Função que recupera o ID do produto passado como parâmetro.
@@ -61,7 +58,7 @@ console.log(createProductItemElement);
  */
 const getIdFromProductItem = (product) => product.querySelector('span.id').innerText;
 
-console.log(getIdFromProductItem());
+// console.log(getIdFromProductItem());
 
 /**
  * Função responsável por criar e retornar um item do carrinho.
@@ -79,7 +76,15 @@ const createCartItemElement = ({ id, title, price }) => {
   return li;
 };
 
-console.log(createCartItemElement());
-// console.log(fetchProducts('computador'));
+const criarListagem = async () => {
+  const saida = await fetchProducts('computador');
+  const item = document.getElementsByClassName('items')[0];
+  saida.results.forEach((p) => item.appendChild(createProductItemElement(p)));
+  // console.log(saida);
+};
 
-window.onload = () => { };
+// window.onload = () => { };
+window.onload = async () => {
+  criarListagem();
+  console.log(await fetchProducts('computador'));
+};
