@@ -71,6 +71,7 @@ const createCartItemElement = ({ id, title, price }) => {
   li.className = 'cart__item';
   li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
   // li.addEventListener('click', cartItemClickListener);
+  li.addEventListener('click', (event) => event.target.remove());
   return li;
 };
 
