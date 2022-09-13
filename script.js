@@ -49,8 +49,6 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
   return section;
 };
 
-// console.log(createProductItemElement);
-
 /**
  * Função que recupera o ID do produto passado como parâmetro.
  * @param {Element} product - Elemento do produto.
@@ -72,23 +70,29 @@ const createCartItemElement = ({ id, title, price }) => {
   const li = document.createElement('li');
   li.className = 'cart__item';
   li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
-  li.addEventListener('click', cartItemClickListener);
+  // li.addEventListener('click', cartItemClickListener);
   return li;
+};
+
+const adcItemCart = async (event) => {
+  // console.log(event.target.parentNode.firstChild.innerText);
+  const item = event.target.parentNode.firstChild.innerText;
+  const objItem = await fetchItem(item);
+  const cartEle = createCartItemElement(objItem);
+  const elem = document.querySelector('.cart__items');
+  elem.appendChild(cartEle);
 };
 
 const criarListagem = async () => {
   const saida = await fetchProducts('computador');
-  const item = document.getElementsByClassName('items')[0];
-  saida.results.forEach((p) => item.appendChild(createProductItemElement(p)));
-  // console.log(saida);
+  const items = document.querySelector('.items');
+  saida.results.forEach((p) => {
+    const element = createProductItemElement(p);
+    element.querySelector('.item__add').addEventListener('click', adcItemCart);
+    items.appendChild(element);
+  });
 };
 
-const adcCart = (event) => {
-  // const item = event.target.innerText.
-};
-
-// window.onload = () => { };
 window.onload = async () => {
   criarListagem();
-  console.log(await fetchProducts('computador'));
 };
