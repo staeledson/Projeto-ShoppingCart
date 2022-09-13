@@ -83,6 +83,10 @@ const criarListagem = async () => {
   // console.log(saida);
 };
 
+const adcCart = (event) => {
+  // const item = event.target.innerText.
+};
+
 // window.onload = () => { };
 window.onload = async () => {
   criarListagem();
