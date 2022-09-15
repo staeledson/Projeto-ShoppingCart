@@ -118,6 +118,17 @@ const inserirTextoDeLoading = () => {
   textoDeLoading.innerHTML = 'Loading...';
 };
 
+const esvaziarCarrinho = () => {
+  btnEsvaziarCarrinho = document.querySelector('.empty-cart');
+  btnEsvaziarCarrinho.addEventListener('click', () => {
+    // console.log('btn esvaziar clicado');
+    const listaDoCarrinho = document.querySelector('.cart__items');
+    listaDoCarrinho.innerText = '';
+  });
+};
+
+esvaziarCarrinho();
+
 window.onload = async () => {
   inserirTextoDeLoading();
   // recuperarItens();
