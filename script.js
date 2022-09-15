@@ -3,6 +3,8 @@
 
 // Fique a vontade para modificar o código já escrito e criar suas próprias funções!
 
+const cartItems = document.querySelector('.cart__items');
+
 /**
  * Função responsável por criar e retornar o elemento de imagem do produto.
  * @param {string} imageSource - URL da imagem.
@@ -60,8 +62,6 @@ const removerTextoDeLoading = async () => {
  */
 const getIdFromProductItem = (product) => product.querySelector('span.id').innerText;
 
-// console.log(getIdFromProductItem());
-
 /**
  * Função responsável por criar e retornar um item do carrinho.
  * @param {Object} product - Objeto do produto.
@@ -78,19 +78,18 @@ const createCartItemElement = ({ id, title, price }) => {
   li.addEventListener('click', (event) => {
     event.target.remove();
   });
-  saveCartItems(li);
   return li;
 };
 
 const adcItemCart = async (event) => {
-  const elem = document.querySelector('.cart__items');
   const item = event.target.parentNode.firstChild.innerText;
   const objItem = await fetchItem(item);
   const cartEle = createCartItemElement(objItem);
-  elem.appendChild(cartEle);
+  cartItems.appendChild(cartEle);
+  saveCartItems(cartItems.innerHTML);
 };
 
-const criarListagem = async () => {
+const criarListaDaPesquisa = async () => {
   const saida = await fetchProducts('computador');
   await removerTextoDeLoading();
   const items = document.querySelector('.items');
@@ -101,14 +100,12 @@ const criarListagem = async () => {
   });
 };
 
-// const recuperarItens = async () => {
-//   const lista = document.querySelector('.cart__items');
-//   const element = createProductItemElement('li');
-//   lista.appendChild(element);
-//   const e = await localStorage.getItem('cartItems');
-//   element.innerHTML = e.innerHTML;
-//   // console.log(e);
-// };
+const recuperarItensDoLS = async () => {
+  cartItems.innerHTML = await getSavedCartItems();
+  cartItems.addEventListener('click', (event) => {
+    event.target.remove();
+  });
+};
 
 const inserirTextoDeLoading = () => {
   const itemsSection = document.querySelector('.items');
@@ -131,6 +128,6 @@ esvaziarCarrinho();
 
 window.onload = async () => {
   inserirTextoDeLoading();
-  // recuperarItens();
-  criarListagem();
+  recuperarItensDoLS();
+  criarListaDaPesquisa();
 };
