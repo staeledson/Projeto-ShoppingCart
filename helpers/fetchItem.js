@@ -1,8 +1,7 @@
 const fetchItem = async (ItemID) => {
   const endPoint = `https://api.mercadolibre.com/items/${ItemID}`;
-  const resposta = await fetch(endPoint);
-  const data = await resposta.json();
-  // console.log(data);
+  const response = await fetch(endPoint);
+  const data = await response.json();
 
   return data;
 };

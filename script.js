@@ -49,6 +49,10 @@ const createProductItemElement = ({ id, title, thumbnail }) => {
   return section;
 };
 
+const removerTextoDeLoading = async () => {
+  document.querySelector('.items').firstChild.remove();
+};
+
 /**
  * Função que recupera o ID do produto passado como parâmetro.
  * @param {Element} product - Elemento do produto.
@@ -71,21 +75,24 @@ const createCartItemElement = ({ id, title, price }) => {
   li.className = 'cart__item';
   li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
   // li.addEventListener('click', cartItemClickListener);
-  li.addEventListener('click', (event) => event.target.remove());
+  li.addEventListener('click', (event) => {
+    event.target.remove();
+  });
+  saveCartItems(li);
   return li;
 };
 
 const adcItemCart = async (event) => {
-  // console.log(event.target.parentNode.firstChild.innerText);
+  const elem = document.querySelector('.cart__items');
   const item = event.target.parentNode.firstChild.innerText;
   const objItem = await fetchItem(item);
   const cartEle = createCartItemElement(objItem);
-  const elem = document.querySelector('.cart__items');
   elem.appendChild(cartEle);
 };
 
 const criarListagem = async () => {
   const saida = await fetchProducts('computador');
+  await removerTextoDeLoading();
   const items = document.querySelector('.items');
   saida.results.forEach((p) => {
     const element = createProductItemElement(p);
@@ -94,6 +101,25 @@ const criarListagem = async () => {
   });
 };
 
+// const recuperarItens = async () => {
+//   const lista = document.querySelector('.cart__items');
+//   const element = createProductItemElement('li');
+//   lista.appendChild(element);
+//   const e = await localStorage.getItem('cartItems');
+//   element.innerHTML = e.innerHTML;
+//   // console.log(e);
+// };
+
+const inserirTextoDeLoading = () => {
+  const itemsSection = document.querySelector('.items');
+  const textoDeLoading = document.createElement('p');
+  itemsSection.appendChild(textoDeLoading);
+  textoDeLoading.className = 'loading';
+  textoDeLoading.innerHTML = 'Loading...';
+};
+
 window.onload = async () => {
+  inserirTextoDeLoading();
+  // recuperarItens();
   criarListagem();
 };
