@@ -4,6 +4,9 @@
 // Fique a vontade para modificar o código já escrito e criar suas próprias funções!
 
 const cartItems = document.querySelector('.cart__items');
+const cartItem = document.querySelector('.cart__items');
+const divTotal = document.querySelector('.total-price');
+let somaCarrinho = 0;
 
 /**
  * Função responsável por criar e retornar o elemento de imagem do produto.
@@ -55,6 +58,20 @@ const removerTextoDeLoading = async () => {
   document.querySelector('.items').firstChild.remove();
 };
 
+const somarProdutosDoCarrinho = async (price) => {
+  const soma = parseFloat(somaCarrinho) + parseFloat(price.toFixed(2));
+  somaCarrinho = soma;
+  localStorage.setItem('total_ammount', soma);
+  divTotal.innerText = await localStorage.getItem('total_ammount');
+};
+
+const subtratirProdutosDoCarrinho = async (price) => {
+  const soma = parseFloat(somaCarrinho) - parseFloat(price.toFixed(2));
+  somaCarrinho = soma;
+  localStorage.setItem('total_ammount', soma);
+  divTotal.innerText = await localStorage.getItem('total_ammount');
+};
+
 /**
  * Função que recupera o ID do produto passado como parâmetro.
  * @param {Element} product - Elemento do produto.
@@ -76,8 +93,13 @@ const createCartItemElement = ({ id, title, price }) => {
   li.innerText = `ID: ${id} | TITLE: ${title} | PRICE: $${price}`;
   // li.addEventListener('click', cartItemClickListener);
   li.addEventListener('click', (event) => {
-    event.target.remove();
+    if (event.target.className === 'cart__item') {
+      subtratirProdutosDoCarrinho(price);
+      event.target.remove();
+    }
   });
+  
+  somarProdutosDoCarrinho(price);
   return li;
 };
 
@@ -101,9 +123,20 @@ const criarListaDaPesquisa = async () => {
 };
 
 const recuperarItensDoLS = async () => {
+  const totalArmazenado = await localStorage.getItem('total_ammount');
+  console.log(typeof totalArmazenado);
+  if (totalArmazenado > 0) {
+    somaCarrinho = parseFloat(totalArmazenado);
+  }
+
+  divTotal.innerText = somaCarrinho;
+
   cartItems.innerHTML = await getSavedCartItems();
-  cartItems.addEventListener('click', (event) => {
-    event.target.remove();
+  cartItem.addEventListener('click', (event) => {
+    if (event.target.className === 'cart__item') {
+      // subtratirProdutosDoCarrinho(price);
+      event.target.remove();
+    }
   });
 };
 
@@ -119,8 +152,9 @@ const esvaziarCarrinho = () => {
   btnEsvaziarCarrinho = document.querySelector('.empty-cart');
   btnEsvaziarCarrinho.addEventListener('click', () => {
     // console.log('btn esvaziar clicado');
-    const listaDoCarrinho = document.querySelector('.cart__items');
-    listaDoCarrinho.innerText = '';
+    cartItems.innerText = '';
+    localStorage.clear();
+    divTotal.innerText = '0';
   });
 };
 
